@@ -54,11 +54,14 @@ const Index = () => {
         <nav className="bg-white border-b border-border/40 sticky top-0 z-50">
             <div className="container mx-auto max-w-6xl px-4 py-4 flex justify-between items-center">
             <div className="flex items-center gap-3">
-                <Vote className="h-6 w-6 text-primary" />
-                <span className="text-xl font-bold text-foreground">Resultados Oficiales</span>
+                <img 
+                  src="/votodigital-logo.png" 
+                  alt="VotoDigital Logo" 
+                  className="h-12 w-auto object-contain" 
+                />
             </div>
             <Button variant="outline" size="sm" onClick={() => navigate("/admin/login")}>
-                Admin
+                Acceso Administrativo
             </Button>
             </div>
         </nav>
@@ -103,8 +106,11 @@ const Index = () => {
       <nav className="bg-white border-b border-border/40 sticky top-0 z-50">
         <div className="container mx-auto max-w-6xl px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <Vote className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold text-foreground">Votaciones Online</span>
+            <img 
+              src="/votodigital-logo.png" 
+              alt="VotoDigital Logo" 
+              className="h-12 w-auto object-contain" 
+            />
           </div>
           <Button
             variant="outline"

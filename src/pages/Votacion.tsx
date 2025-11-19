@@ -48,8 +48,11 @@ const Votacion = () => {
       {/* Navbar */}
       <nav className="bg-white border-b border-border/40">
         <div className="container mx-auto max-w-6xl px-4 py-4 flex items-center gap-3">
-          <Vote className="h-6 w-6 text-primary" />
-          <span className="text-xl font-bold text-foreground">Votaciones Online</span>
+          <img 
+              src="/votodigital-logo.png" 
+              alt="VotoDigital Logo" 
+              className="h-12 w-auto object-contain" 
+            />
         </div>
       </nav>
       
