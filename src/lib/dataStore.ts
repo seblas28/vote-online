@@ -82,6 +82,15 @@ const defaultCandidates: Candidate[] = [
   },
 ];
 
+export const convertImageToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
+};
+
 export const dataStore = {
   // Candidates
   getCandidates(): Candidate[] {
@@ -239,7 +248,6 @@ export const dataStore = {
   },
 
   importVotesFromCSV(csvData: string) {
-    // Expected CSV format: president_id,mayor_id,deputy_id
     const lines = csvData.split('\n').filter(line => line.trim());
     const votes = this.getVotes();
     
@@ -255,18 +263,15 @@ export const dataStore = {
       
       const [president, mayor, deputy] = line.split(',').map(s => s.trim());
       
-      // Data cleaning: validate row has at least one value
       if (!president && !mayor && !deputy) {
         invalidRows++;
         return;
       }
       
-      // Data training: normalize blank votes to 'null'
       const cleanPresident = (!president || president === '' || !validIds.has(president)) ? 'null' : president;
       const cleanMayor = (!mayor || mayor === '' || !validIds.has(mayor)) ? 'null' : mayor;
       const cleanDeputy = (!deputy || deputy === '' || !validIds.has(deputy)) ? 'null' : deputy;
       
-      // Track null votes
       if (cleanPresident === 'null' || cleanMayor === 'null' || cleanDeputy === 'null') {
         nullVotes++;
       }

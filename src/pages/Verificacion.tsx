@@ -9,30 +9,42 @@ import { toast } from "sonner";
 
 const Verificacion = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    dni: "",
-    nombre: "",
-    fechaNacimiento: "",
-  });
+  const [dni, setDni] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.dni || !formData.nombre || !formData.fechaNacimiento) {
-      toast.error("Por favor completa todos los campos");
+    if (!dni) {
+      toast.error("Por favor ingrese tu número de DNI");
       return;
     }
 
-    if (formData.dni.length !== 8) {
+    if (dni.length !== 8) {
       toast.error("El DNI debe tener 8 dígitos");
+      return;
+    }
+
+    if (!/^\d{8}$/.test(dni)) {
+      toast.error("El DNI debe contener solo números");
       return;
     }
 
     // Simulación de verificación exitosa
     toast.success("Verificación exitosa. Iniciando proceso de votación...");
+
+
+    //Guarda el DNI en Storage (Esto se cambia a futuro por un token real)
+    sessionStorage.setItem("voter_dni", dni);
+
     setTimeout(() => {
       navigate("/votacion");
     }, 1500);
+  };
+
+  const handleDniChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Solo permitir números y máximo 8 dígitos
+    const value = e.target.value.replace(/\D/g, "").slice(0, 8);
+    setDni(value);
   };
 
   return (
@@ -61,7 +73,7 @@ const Verificacion = () => {
           <CardHeader>
             <CardTitle>Datos del Votante</CardTitle>
             <CardDescription>
-              Todos los campos son obligatorios para la verificación
+              Ingresa tu número de DNI para continuar
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -73,33 +85,15 @@ const Verificacion = () => {
                   type="text"
                   placeholder="12345678"
                   maxLength={8}
-                  value={formData.dni}
-                  onChange={(e) => setFormData({ ...formData, dni: e.target.value.replace(/\D/g, "") })}
+                  value={dni}
+                  onChange={handleDniChange}
                   required
+                  className="text-lg text-center tracking-wider font-mono"
+                  autoFocus
                 />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="nombre">Nombre Completo</Label>
-                <Input
-                  id="nombre"
-                  type="text"
-                  placeholder="Juan Pérez García"
-                  value={formData.nombre}
-                  onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="fechaNacimiento">Fecha de Nacimiento</Label>
-                <Input
-                  id="fechaNacimiento"
-                  type="date"
-                  value={formData.fechaNacimiento}
-                  onChange={(e) => setFormData({ ...formData, fechaNacimiento: e.target.value })}
-                  required
-                />
+                <p className="text-xs text-muted-foreground text-center">
+                  Ingresa los 8 dígitos de tu DNI sin puntos ni espacios
+                </p>
               </div>
 
               <Button type="submit" className="w-full" size="lg">
@@ -117,6 +111,25 @@ const Verificacion = () => {
             Volver al Inicio
           </Button>
         </div>
+        {/* Información adicional */}
+        <Card className="mt-6 bg-muted/50">
+          <CardContent className="pt-6">
+            <div className="space-y-2 text-sm text-muted-foreground">
+              <p className="flex items-start gap-2">
+                <ShieldCheck className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
+                <span>Tu información está protegida y encriptada</span>
+              </p>
+              <p className="flex items-start gap-2">
+                <ShieldCheck className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
+                <span>Solo puedes votar una vez por DNI</span>
+              </p>
+              <p className="flex items-start gap-2">
+                <ShieldCheck className="h-4 w-4 mt-0.5 text-primary flex-shrink-0" />
+                <span>El voto es anónimo y confidencial</span>
+              </p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
       </div>
     </div>
