@@ -28,7 +28,7 @@ const Index = () => {
 
         const distance = end - now;
 
-        if (distance > 0) {
+        if (distance < 0) {
           dataStore.endVoting();
           setStatus(dataStore.getVotingStatus());
         } else {
@@ -316,13 +316,23 @@ const Index = () => {
           </div>
 
           <div className="mt-12 text-center">
-            <Button
-              size="lg"
-              onClick={() => navigate("/verificacion")}
-              className="text-lg px-8 py-6"
-            >
-              Comenzar a Votar Ahora
-            </Button>
+            {status.isActive ? (
+              <Button
+                size="lg"
+                onClick={() => navigate("/verificacion")}
+                className="text-lg px-8 py-6"
+              >
+                Comenzar a Votar Ahora
+              </Button>
+            ) : (
+              <Button
+                size="lg"
+                disabled
+                className="text-lg px-8 py-6 opacity-70 cursor-not-allowed bg-muted text-muted-foreground hover:bg-muted"
+              >
+                {status.isFinished ? "Votación Finalizada" : "Votación No Iniciada"}
+              </Button>
+            )}
           </div>
         </div>
       </section>
