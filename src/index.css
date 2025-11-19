@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 217 33% 17%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 217 33% 17%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 217 33% 17%;
+
+    --primary: 217 91% 28%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 214 32% 91%;
+    --secondary-foreground: 217 33% 17%;
+
+    --muted: 214 32% 91%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 142 76% 36%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 32% 88%;
+    --input: 214 32% 88%;
+    --ring: 217 91% 28%;
+
+    --radius: 0.5rem;
+
+    --institutional: 217 91% 28%;
+    --institutional-light: 217 91% 40%;
+    --success: 142 76% 36%;
+    --warning: 38 92% 50%;
+
+    --chart-1: 217 91% 28%; /* Primary Institutional */
+    --chart-2: 142 76% 36%; /* Accent/Success */
+    --chart-3: 38 92% 50%;  /* Warning */
+    --chart-4: 215 16% 47%; /* Muted Foreground */
+    --chart-5: 214 32% 91%; /* Muted */
+
+    --gradient-institutional: linear-gradient(135deg, hsl(217 91% 28%) 0%, hsl(217 91% 40%) 100%);
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  .dark {
+    --background: 217 33% 12%;
+    --foreground: 210 20% 98%;
+
+    --card: 217 33% 15%;
+    --card-foreground: 210 20% 98%;
+
+    --popover: 217 33% 15%;
+    --popover-foreground: 210 20% 98%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 217 33% 12%;
+
+    --secondary: 217 32% 20%;
+    --secondary-foreground: 210 20% 98%;
+
+    --muted: 217 32% 20%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 142 76% 45%;
+    --accent-foreground: 217 33% 12%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 210 20% 98%;
+
+    --border: 217 32% 20%;
+    --input: 217 32% 20%;
+    --ring: 217 91% 60%;
+
+    --institutional: 217 91% 60%;
+    --institutional-light: 217 91% 70%;
+    --success: 142 76% 45%;
+    --warning: 38 92% 60%;
+
+    --chart-1: 217 91% 60%; /* Primary Institutional (Lightened for dark mode) */
+    --chart-2: 142 76% 45%; /* Accent/Success (Lightened for dark mode) */
+    --chart-3: 38 92% 60%;  /* Warning (Lightened for dark mode) */
+    --chart-4: 215 20% 65%; /* Muted Foreground (Lightened for dark mode) */
+    --chart-5: 217 32% 20%; /* Secondary */
+
+    --gradient-institutional: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(217 91% 70%) 100%);
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.2);
+    --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.3);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
