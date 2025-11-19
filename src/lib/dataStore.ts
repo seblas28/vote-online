@@ -144,6 +144,10 @@ export const dataStore = {
     }));
   },
 
+  setVotes(votes: Vote[]) {
+    localStorage.setItem(STORAGE_KEYS.VOTES, JSON.stringify(votes));
+  },
+
   addVote(vote: Omit<Vote, 'id' | 'timestamp'>) {
     const votes = this.getVotes();
     const newVote: Vote = {
@@ -152,7 +156,7 @@ export const dataStore = {
       timestamp: new Date(),
     };
     votes.push(newVote);
-    localStorage.setItem(STORAGE_KEYS.VOTES, JSON.stringify(votes));
+    this.setVotes(votes);
     return newVote;
   },
 
@@ -290,6 +294,39 @@ export const dataStore = {
     return { imported, nullVotes, invalidRows };
   },
 
+  revalidateAndCleanVotes(): number {
+    const votes = this.getVotes();
+    const candidates = this.getCandidates();
+    const validIds = new Set(candidates.map(c => c.id));
+
+    let cleanedCount = 0;
+
+    const updatedVotes = votes.map(vote => {
+      let isCleaned = false;
+      const updateVote = { ...vote };
+
+      if(updateVote.president && updateVote.president !== 'null' && !validIds.has(updateVote.president)) {
+        updateVote.president = 'null';
+        isCleaned = true;
+      }
+      if(updateVote.mayor && updateVote.mayor !== 'null' && !validIds.has(updateVote.mayor)) {
+        updateVote.mayor = 'null';
+        isCleaned = true;
+      }
+      if(updateVote.deputy && updateVote.deputy !== 'null' && !validIds.has(updateVote.deputy)) {
+        updateVote.deputy = 'null';
+        isCleaned = true;
+      }
+
+      if (isCleaned) cleanedCount++;
+      return updateVote;
+    });
+
+    this.setVotes(updatedVotes);
+    return cleanedCount;
+
+  },
+
   getWinners() {
     const stats = this.getVoteStats();
     const candidates = this.getCandidates();
@@ -317,4 +354,6 @@ export const dataStore = {
       deputy: getCategoryWinner('deputy'),
     };
   }
+
+  
 };

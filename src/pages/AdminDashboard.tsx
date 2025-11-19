@@ -234,10 +234,19 @@ const AdminDashboard = () => {
 
   const handleDataCleaning = () => {
     setIsProcessing(true);
-    toast.loading("Limpiando datos...");
+    toast.loading("Limpiando datos...", {id: "data-clean"});
     setTimeout(() => {
+      const cleaneCount = dataStore.revalidateAndCleanVotes()
+      loadData();
       setIsProcessing(false);
-      toast.success("Datos limpiados correctamente");
+      toast.dismiss("data-clean");
+      toast.success(`Datos limpiados. ${cleaneCount} votos corregidos.`);
+
+      if (cleaneCount < 0) {
+        toast.error("Algunos votos no pudieron ser corregidos y fueron marcados como nulos.");
+      } else{
+        toast.success("Todos los votos fueron validados correctamente.");
+      }
     }, 2000);
   };
 
