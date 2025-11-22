@@ -9,42 +9,30 @@ import { toast } from "sonner";
 
 const Verificacion = () => {
   const navigate = useNavigate();
-  const [dni, setDni] = useState("");
+  const [formData, setFormData] = useState({
+    dni: "",
+    nombre: "",
+    fechaNacimiento: "",
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!dni) {
-      toast.error("Por favor ingrese tu número de DNI");
+    if (!formData.dni || !formData.nombre || !formData.fechaNacimiento) {
+      toast.error("Por favor completa todos los campos");
       return;
     }
 
-    if (dni.length !== 8) {
+    if (formData.dni.length !== 8) {
       toast.error("El DNI debe tener 8 dígitos");
-      return;
-    }
-
-    if (!/^\d{8}$/.test(dni)) {
-      toast.error("El DNI debe contener solo números");
       return;
     }
 
     // Simulación de verificación exitosa
     toast.success("Verificación exitosa. Iniciando proceso de votación...");
-
-
-    //Guarda el DNI en Storage (Esto se cambia a futuro por un token real)
-    sessionStorage.setItem("voter_dni", dni);
-
     setTimeout(() => {
       navigate("/votacion");
     }, 1500);
-  };
-
-  const handleDniChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Solo permitir números y máximo 8 dígitos
-    const value = e.target.value.replace(/\D/g, "").slice(0, 8);
-    setDni(value);
   };
 
   return (
@@ -76,7 +64,7 @@ const Verificacion = () => {
           <CardHeader>
             <CardTitle>Datos del Votante</CardTitle>
             <CardDescription>
-              Ingresa tu número de DNI para continuar
+              Todos los campos son obligatorios para la verificación
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -88,15 +76,33 @@ const Verificacion = () => {
                   type="text"
                   placeholder="12345678"
                   maxLength={8}
-                  value={dni}
-                  onChange={handleDniChange}
+                  value={formData.dni}
+                  onChange={(e) => setFormData({ ...formData, dni: e.target.value.replace(/\D/g, "") })}
                   required
-                  className="text-lg text-center tracking-wider font-mono"
-                  autoFocus
                 />
-                <p className="text-xs text-muted-foreground text-center">
-                  Ingresa los 8 dígitos de tu DNI sin puntos ni espacios
-                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="nombre">Nombre Completo</Label>
+                <Input
+                  id="nombre"
+                  type="text"
+                  placeholder="Juan Pérez García"
+                  value={formData.nombre}
+                  onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="fechaNacimiento">Fecha de Nacimiento</Label>
+                <Input
+                  id="fechaNacimiento"
+                  type="date"
+                  value={formData.fechaNacimiento}
+                  onChange={(e) => setFormData({ ...formData, fechaNacimiento: e.target.value })}
+                  required
+                />
               </div>
 
               <Button type="submit" className="w-full" size="lg">
